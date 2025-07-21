@@ -1,8 +1,12 @@
 import React from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
+import useCart from "@/hooks/useAddToCart";
+import NotificationMessage from "@/context/NotificationMessage";
 
 export default function ProductShow({ auth, product, relatedProducts }) {
+    const { addToCart, notification, clearNotification, isLoading } =
+        useCart(auth);
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -13,7 +17,13 @@ export default function ProductShow({ auth, product, relatedProducts }) {
             }
         >
             <Head title={product.name} />
-
+            {notification && (
+                <NotificationMessage
+                    message={notification.message}
+                    type={notification.type}
+                    onDismiss={clearNotification}
+                />
+            )}
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     {/* Back button */}
@@ -48,7 +58,7 @@ export default function ProductShow({ auth, product, relatedProducts }) {
                                             <img
                                                 src={product.image}
                                                 alt={product.name}
-                                                className="w-full h-full object-contain"
+                                                className="w-full h-full object-cover" // Changed from 'object-contain' to 'object-cover'
                                                 onError={(e) => {
                                                     e.target.onerror = null;
                                                     e.target.src =
@@ -81,7 +91,10 @@ export default function ProductShow({ auth, product, relatedProducts }) {
                                     </div>
 
                                     <div className="flex space-x-4">
-                                        <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300">
+                                        <button
+                                            onClick={() => addToCart(product)}
+                                            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
+                                        >
                                             Add to Cart
                                         </button>
                                     </div>

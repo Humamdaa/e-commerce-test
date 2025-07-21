@@ -17,8 +17,7 @@ export default function useCart(auth) {
                         {},
                         {
                             preserveScroll: true,
-                            onSuccess: () => 
-                                {
+                            onSuccess: () => {
                                 setNotification({
                                     type: "success",
                                     message: `${product.name} added to cart!`,
@@ -74,8 +73,7 @@ export default function useCart(auth) {
             setIsLoading(false);
         }
     };
-    useEffect(() => {
-    }, [notification]);
+    useEffect(() => {}, [notification]);
     const clearNotification = () => {
         setNotification(null);
     };
